@@ -6,27 +6,23 @@ const editModal = document.querySelector("#editModal");
 let todos = [];
 let todo;
 
-// sayfa sayısı
+// default olarak ayarlayacağımız sayfanın numarası
 let current_page = 1;
 
-//her sayfada ne kadar satır bulunacağı
-let rows = 10;
+//sayfa her render edildiğinde kaç adet listede kaç tane madde olacağını gösterir.
+let rows = 15;
 
-const renderTodos = (page = 1) => {
-  //page = 1 -> default olarak 1. sayfada olması için varsayılan değer.
+const renderTodos = (page = 1) => {   //sayfa render edildiğinde ilk sayfa görünecek
   root.innerHTML = "";
-  // todoları listele
   const table = document.createElement("table");
   table.setAttribute("class", "table table-hover");
 
   const thead = document.createElement("thead");
-
-  // sıralama yapmak için title-sorting id' si tanımlandı. Butonada verilebilir.
   thead.innerHTML = `
     <tr>
-      <th scope="col" id="title-sorting">id <button>&uarr;</button></th>
-      <th scope="col">Başlık <button>&darr;</button></th>
-      <th scope="col">Kullanıcı Id</th>
+      <th scope="col" id="id-sorting"><button id="id-button1" type="button" class="btn btn-success">ID &dArr;</button> <button id="id-button2" type="button" class="btn btn-success">ID &uArr;</button></th>
+      <th scope="col">Başlık</th>
+      <th scope="col" id="userid-sorting"><button id="userid-button1" class="btn btn-success" >User ID &dArr;</button> <button id="userid-button2"class="btn btn-success" >User ID &uArr;</button></th>
       <th scope="col">Durum</th>
       <th scope="col"></th>
     </tr>
@@ -52,7 +48,7 @@ const renderTodos = (page = 1) => {
     `;
     tbody.appendChild(tr);
   };
-
+ 
   // şu anki sayfanın 1 eksiği örneği 1. sayfaysa 0
   page--;
 
@@ -68,6 +64,7 @@ const renderTodos = (page = 1) => {
   paginatedItems.forEach((item) => {
     renderItem(item);
   });
+
   table.appendChild(tbody);
   root.append(table);
 
@@ -76,7 +73,6 @@ const renderTodos = (page = 1) => {
       const id = Number(e.currentTarget.getAttribute("data-id"));
       if (confirm("kaydı silmek istediğinize emin misiniz?")) {
         todos = todos.filter((x) => x.id !== id);
-        // aynı sayfada kalması için current_page parametresi eklendi.
         renderTodos(current_page);
       }
     });
@@ -92,34 +88,35 @@ const renderTodos = (page = 1) => {
       editModal.classList.add("show");
     });
   });
-
-  const sorting = document.querySelector("#title-sorting");
-  sorting.addEventListener("click", () => {
-    // başlığa tıklandığında sıralama yapılacak.
-    todos.sort((a, b) => {
-      // küçük ve büyük harf farkını engellemek için
-      const nameA = a.title.toUpperCase(); // ignore upper and lowercase
-      const nameB = b.title.toUpperCase(); // ignore upper and lowercase
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-
-      // names must be equal
-      return 0;
-    });
-    // sıralama yapılacak tekrar o sayfada render edilecek.
+  //id'ye göre sıralama
+  document.querySelector("#id-button2").addEventListener("click", () => {
+    todos.sort((a, b) => b.id - a.id);
     renderTodos(current_page);
+    console.log(todos);
+  });
+  document.querySelector("#id-button1").addEventListener("click", () => {
+    todos.sort((a, b) => a.id - b.id);
+    renderTodos(current_page);
+    console.log(todos);
+  });
+
+  //userid'ye göre sıralama
+  document.querySelector("#userid-button1").addEventListener("click", () => {
+    todos.sort((a, b) => a.userId - b.userId);
+    renderTodos(current_page);
+    console.log(todos);
+  });
+  document.querySelector("#userid-button2").addEventListener("click", () => {
+    todos.sort((a, b) => b.userId - a.userId);
+    renderTodos(current_page);
+    console.log(todos);
   });
 };
 
+//Sayfa Numaralandırma
 document.querySelectorAll(".page-link").forEach((btn) => {
-  // pagination butonları içinde döndürülerek, her elemente click eklendi, tıklandığında kaçıncı sayfadaysa oraya göre render edilecek.
   btn.addEventListener("click", () => {
     let data_id = btn.getAttribute("data-id");
-    // kaçıncı buton olduğu attribute olarak alında.
     current_page = Number(data_id);
     renderTodos(current_page);
   });
