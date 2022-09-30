@@ -1,4 +1,4 @@
-<h1 color="red"><a href="https://sertacgultekin-week2-task.netlify.app" target="_blank">---NETLİFY DEPLOY LİNK---</a></h1>
+<h1 target="_blank"><a href="https://sertacgultekin-week2-task.netlify.app" >---NETLİFY DEPLOY LİNK---</a></h1>
 
 
 
