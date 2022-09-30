@@ -1,3 +1,7 @@
+<h1 color="red"><a href="https://sertacgultekin-week2-task.netlify.app" target="_blank">---NETLİFY DEPLOY LİNK---</a></h1>
+
+
+
 ## Sıralama ödevi algoritması
 ##### todos.js dosyası içerisinde düzenlenecek.
 table thead kısmındaki sıralama yapılacak kolonlara event listener eklenecek.
